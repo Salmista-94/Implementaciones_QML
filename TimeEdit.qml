@@ -147,11 +147,11 @@ Item {
     }
 
     function isMovedPressed(key){
-        if (event.key === Qt.Key_Up) {
+        if (key === Qt.Key_Up) {
             __increment(t_Field, 1);
-        }else if (event.key === Qt.Key_Down) {
+        }else if (key === Qt.Key_Down) {
             __increment(t_Field, -1);
-        }else if (event.key === Qt.Key_Left) {
+        }else if (key === Qt.Key_Left) {
             t_Field.cursorPosition = (t_Field.cursorPosition >= 3? t_Field.cursorPosition -3: 0)
             t_Field.selectWord()
             if (isNaN(Number(t_Field.selectedText))){
@@ -159,7 +159,7 @@ Item {
                 t_Field.selectWord()
             }
             //print("Left")
-        }else if (event.key === Qt.Key_Right) {// || event.key === Qt.Key_Tab
+        }else if (key === Qt.Key_Right) {// || key === Qt.Key_Tab
             t_Field.cursorPosition = t_Field.cursorPosition +2
             t_Field.selectWord()
             if (isNaN(Number(t_Field.selectedText)))
