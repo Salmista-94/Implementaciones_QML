@@ -27,7 +27,7 @@ Item {
     property alias font: t_Field.font //: TextSingleton.font
     //property int pixelSize//: t_Field.font.pixelSize //: TextSingleton.font
     property bool showWeekNumbers: true
-    property var _root: findRoot()
+    //property var _root: findRoot()
 
     signal calendarActived()
 
@@ -93,7 +93,7 @@ Item {
         regExp = /\d{1,2}\/\d\d\/\d\d\s{spacer}\d{1,2}:\d\d/
         makeSpace()
         editor.setText(new Date().toLocaleString(Qt.locale(), "d/MM/yy"+s_Spacer+"h:mm"))
-        print("_root", _root, _root["rt"], _root["x"], _root["y"])
+        //print("_root", _root, _root["rt"], _root["x"], _root["y"])
     }
 
 
@@ -262,11 +262,11 @@ Item {
     }
 
     function isMovedPressed(key){
-        if (event.key === Qt.Key_Up) {
+        if (key === Qt.Key_Up) {
             __increment(t_Field, 1);
-        }else if (event.key === Qt.Key_Down) {
+        }else if (key === Qt.Key_Down) {
             __increment(t_Field, -1);
-        }else if (event.key === Qt.Key_Left) {
+        }else if (key === Qt.Key_Left) {
             t_Field.cursorPosition = (t_Field.cursorPosition >= 3? t_Field.cursorPosition -3: 0)
             t_Field.selectWord()
             if (isNaN(Number(t_Field.selectedText))){
@@ -274,7 +274,7 @@ Item {
                 t_Field.selectWord()
             }
             //print("Left")
-        }else if (event.key === Qt.Key_Right) {// || event.key === Qt.Key_Tab
+        }else if (key === Qt.Key_Right) {// || key === Qt.Key_Tab
             t_Field.cursorPosition = t_Field.cursorPosition +2
             t_Field.selectWord()
             if (isNaN(Number(t_Field.selectedText)))
@@ -336,21 +336,28 @@ Item {
     }
 
 
-    Window{//para evitar problemas de seleccion, con el combobox que esta debajo
+    //Window{//para evitar problemas de seleccion, con el combobox que esta debajo
+    Rectangle{
         //InfoBox
         id: calendario
-        flags: Qt.Popup
+        //_-flags: Qt.Popup
         //modality: Qt.ApplicationModal
         width: 200
         height: 180
         visible: _subBut.checked
+        
+        //x: editor.x//+editor.width
+        //y: editor.y+editor.height
+        anchors.left: editor.left
+        anchors.top: editor.bottom
+
+        //x: editor.x+editor.parent.x//+editor.width
+        //y: editor.y+editor.height+editor.parent.y
+
         /*
-        x: editor.x+editor.parent.x//+editor.width
-        y: editor.y+editor.height+editor.parent.y
-        */
         x: _root["x"]+_root["rt"].x
         y: _root["y"]+_root["rt"].y+editor.height
-        /*
+        *//*
         anchors.top: editor.bottom
         anchors.left: editor.left
         anchors.topMargin: 0
@@ -364,10 +371,10 @@ Item {
             PropertyAnimation {target: calendario; properties: "color"; to: "#777"; duration: 100}
             PropertyAnimation {target: calendario; properties: "color"; to: "#f16234"; duration: 100}
         }*/
-        Calendar {
+        Calendar {// using that style: https://bugreports.qt.io/browse/QTBUG-51592
             id: _subCal
             anchors.fill: parent
-            z:1/**/
+            z:1000/**/
             focus: visible//
             //anchors.margins: 5
             frameVisible: true
